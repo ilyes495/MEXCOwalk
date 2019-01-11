@@ -242,8 +242,8 @@ def generate_our_eval_files(path_pre = "../hint/out/evaluation_tab/"):
         d = {}
         for key in models:
             #print(key)
-            if key == "hotnet2":
-                continue
+            # if key == "hotnet2":
+            #     continue
             with open(path_pre + key + "/our_eval_" + key + ".txt", "r") as f:
                 lines = f.readlines()
                 for line in lines:
@@ -252,14 +252,14 @@ def generate_our_eval_files(path_pre = "../hint/out/evaluation_tab/"):
                     e = line[i+1].strip()
                     d[str(N) + key] = e
 
-        key = "hotnet2"
-        with open(path_pre + 'hotnet2' + "/our_eval_hotnet2.txt", "r") as f:
-            lines = f.readlines()
-            for line in lines:
-                line = line.split()
-                N = line[0].strip()
-                e = line[i+1].strip()
-                d[str(N) + key] = e
+        # key = "hotnet2"
+        # with open(path_pre + 'hotnet2' + "/our_eval_hotnet2.txt", "r") as f:
+        #     lines = f.readlines()
+        #     for line in lines:
+        #         line = line.split()
+        #         N = line[0].strip()
+        #         e = line[i+1].strip()
+        #         d[str(N) + key] = e
         with open(path_pre + eval + ".txt", "w") as f:
             f.write('N\t')
             for k in models:
@@ -375,7 +375,8 @@ models = [
     "mutex_t09_ncomb_cov_nsep", "mutex_t09_nsep_cov_ncomb",  \
 
     #Memcover modules
-    "memcover0.2"
+    "memcover0.2",
+    "memcover0.08"
      ]
 # Read the file once, instead of reading it in a loop many times
 cosmic_genes = read_cosmic_genes()
@@ -387,7 +388,9 @@ for key in tqdm(models):
     hotnet_paths = prep_file_paths('../hint/out/connected_components_isolarge/hotnet2/*.txt')
     our_paths = prep_file_paths('../hint/out/connected_components_isolarge/' + our_path_key +'/*.txt')
     #print ('done printing paths')
-    #print('our paths: ', len(our_paths))
+    print('our paths: ', len(our_paths))
+    print('our paths: ', our_paths)
+
 
     newpath = '../hint/out/evaluation/{0}'.format(our_path_key)
     if not os.path.exists(newpath):
@@ -408,28 +411,31 @@ for key in tqdm(models):
     fhout = open('../hint/out/evaluation/'+ our_path_key + '/optimized_function_comparison/summary_' + our_path_key  +'.txt', 'w')
     num_genes_list = range(100,400,100)+[371]+range(400,1100,100)
     #print(len(num_genes_list), len(our_paths)+1)
-    for i in trange(min(11, len(our_paths)), desc='running main evaluation'):
+
+    skip_count = 0 # this is a trick to handle the invariance in the number of files
+    for i in trange(min(11, len(our_paths)+1), desc='running main evaluation'):
 
         num_genes = str(num_genes_list[i])
-        if (key == "hotnet2") and (num_genes == '371'):
+        if (key == "hotnet2" or key == 'memcover0.08') and (num_genes == '371'):
+            skip_count +=1
             print('key is {} and num_genes is {}'.format(key, num_genes))
             continue
         # COSMIC analysis
         module_name = our_path_key + '/cosmic_' + our_path_key
-        [our_overlap, hotnet2_overlap] = cosmic_overlap_analysis(our_paths[i], hotnet_paths[i], cosmic_genes, module_name, num_genes)
+        [our_overlap, hotnet2_overlap] = cosmic_overlap_analysis(our_paths[i-skip_count], hotnet_paths[i], cosmic_genes, module_name, num_genes)
         print >>fhout, our_overlap, hotnet2_overlap,
 
         outfile = '../hint/out/evaluation/'+ our_path_key + '/optimized_function_comparison/' + our_path_key + '_' + str(num_genes) + '.txt'
-        outfilehotnet2 = '../hint/out/evaluation/'+ our_path_key + '/optimized_function_comparison/hotnet2_' + str(num_genes) + '.txt'
+        #outfilehotnet2 = '../hint/out/evaluation/'+ our_path_key + '/optimized_function_comparison/hotnet2_' + str(num_genes) + '.txt'
 
         outfile_tab = '../hint/out/evaluation_tab/'+ our_path_key + '/our_eval_' + our_path_key + '.txt'
-        outfilehotnet2_tab = '../hint/out/evaluation_tab/'+ our_path_key + '/our_eval_hotnet2_' + our_path_key+ '.txt'
+        #outfilehotnet2_tab = '../hint/out/evaluation_tab/'+ our_path_key + '/our_eval_hotnet2_' + our_path_key+ '.txt'
 
-        our_scores = calculate_scores_for_subnetworks(our_paths[i], edge_list_original, outfile, outfile_tab, num_genes)
-        hotnet_scores = calculate_scores_for_subnetworks(hotnet_paths[i], edge_list_original, outfilehotnet2, outfilehotnet2_tab, num_genes)
+        our_scores = calculate_scores_for_subnetworks(our_paths[i-skip_count], edge_list_original, outfile, outfile_tab, num_genes)
+        #hotnet_scores = calculate_scores_for_subnetworks(hotnet_paths[i], edge_list_original, outfilehotnet2, outfilehotnet2_tab, num_genes)
 
         for j in range(len(our_scores)):
-            print >>fhout, our_scores[j], hotnet_scores[j],
+            print >>fhout, our_scores[j],# hotnet_scores[j],
         print >>fhout, '\n',
 
 
