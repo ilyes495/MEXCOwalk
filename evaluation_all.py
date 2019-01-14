@@ -426,13 +426,9 @@ for key in tqdm(models):
         print >>fhout, our_overlap, hotnet2_overlap,
 
         outfile = '../hint/out/evaluation/'+ our_path_key + '/optimized_function_comparison/' + our_path_key + '_' + str(num_genes) + '.txt'
-        #outfilehotnet2 = '../hint/out/evaluation/'+ our_path_key + '/optimized_function_comparison/hotnet2_' + str(num_genes) + '.txt'
-
         outfile_tab = '../hint/out/evaluation_tab/'+ our_path_key + '/our_eval_' + our_path_key + '.txt'
-        #outfilehotnet2_tab = '../hint/out/evaluation_tab/'+ our_path_key + '/our_eval_hotnet2_' + our_path_key+ '.txt'
 
         our_scores = calculate_scores_for_subnetworks(our_paths[i-skip_count], edge_list_original, outfile, outfile_tab, num_genes)
-        #hotnet_scores = calculate_scores_for_subnetworks(hotnet_paths[i], edge_list_original, outfilehotnet2, outfilehotnet2_tab, num_genes)
 
         for j in range(len(our_scores)):
             print >>fhout, our_scores[j],# hotnet_scores[j],

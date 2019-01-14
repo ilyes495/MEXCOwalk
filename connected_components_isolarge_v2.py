@@ -14,31 +14,31 @@ import tqdm
 # finds a threshold for hotnet2 and our algorithm that generates connected
 # components with total number of genes N
 models = [
-    #"cov"
     # "hotnet2",
-    "mutex", "mutex_cov", #"cov",\
-    "mutex_wesme", "mutex_wesme_cov", \
-    "mutex_ncomb", "cov_ncomb", "mutex_ncomb_cov", \
-    "mutex_nsep", "cov_nsep", "mutex_nsep_cov", \
-
-
-
-    #these have threshold >0.00007
-    "mutex_t05_ncomb_cov_ncomb", "mutex_t05_nsep_cov_nsep", \
-    "mutex_t06_ncomb_cov_ncomb", "mutex_t06_nsep_cov_nsep", \
-    "mutex_t07_ncomb_cov_ncomb",  "mutex_t07_nsep_cov_nsep", \
-    "mutex_t08_ncomb_cov_ncomb",  "mutex_t08_nsep_cov_nsep", \
-    "mutex_t09_ncomb_cov_ncomb", "mutex_t09_nsep_cov_nsep", \
-
-    #these have common threshold > 0.0002
-    "mutex_t05_ncomb_cov", "mutex_t05_nsep_cov", "mutex_t06_ncomb_cov",
-    "mutex_t06_nsep_cov", \
-    "mutex_t07_ncomb_cov", "mutex_t07_nsep_cov", "mutex_t08_ncomb_cov", "mutex_t08_nsep_cov", \
-    "mutex_t09_ncomb_cov", "mutex_t09_nsep_cov",\
-    "mutex_t10_cov", \
-    "mutex_t05_ncomb_cov_nsep", "mutex_t05_nsep_cov_ncomb", "mutex_t06_ncomb_cov_nsep", "mutex_t06_nsep_cov_ncomb", \
-    "mutex_t07_ncomb_cov_nsep", "mutex_t07_nsep_cov_ncomb", "mutex_t08_ncomb_cov_nsep", "mutex_t08_nsep_cov_ncomb", \
-    "mutex_t09_ncomb_cov_nsep", "mutex_t09_nsep_cov_ncomb"  \
+    'mutex_t07_ncomb_cov'
+    # "mutex", "mutex_cov", #"cov",\
+    # "mutex_wesme", "mutex_wesme_cov", \
+    # "mutex_ncomb", "cov_ncomb", "mutex_ncomb_cov", \
+    # "mutex_nsep", "cov_nsep", "mutex_nsep_cov", \
+    #
+    #
+    #
+    # #these have threshold >0.00007
+    # "mutex_t05_ncomb_cov_ncomb", "mutex_t05_nsep_cov_nsep", \
+    # "mutex_t06_ncomb_cov_ncomb", "mutex_t06_nsep_cov_nsep", \
+    # "mutex_t07_ncomb_cov_ncomb",  "mutex_t07_nsep_cov_nsep", \
+    # "mutex_t08_ncomb_cov_ncomb",  "mutex_t08_nsep_cov_nsep", \
+    # "mutex_t09_ncomb_cov_ncomb", "mutex_t09_nsep_cov_nsep", \
+    #
+    # #these have common threshold > 0.0002
+    # "mutex_t05_ncomb_cov", "mutex_t05_nsep_cov", "mutex_t06_ncomb_cov",
+    # "mutex_t06_nsep_cov", \
+    # "mutex_t07_ncomb_cov", "mutex_t07_nsep_cov", "mutex_t08_ncomb_cov", "mutex_t08_nsep_cov", \
+    # "mutex_t09_ncomb_cov", "mutex_t09_nsep_cov",\
+    # "mutex_t10_cov", \
+    # "mutex_t05_ncomb_cov_nsep", "mutex_t05_nsep_cov_ncomb", "mutex_t06_ncomb_cov_nsep", "mutex_t06_nsep_cov_ncomb", \
+    # "mutex_t07_ncomb_cov_nsep", "mutex_t07_nsep_cov_ncomb", "mutex_t08_ncomb_cov_nsep", "mutex_t08_nsep_cov_ncomb", \
+    # "mutex_t09_ncomb_cov_nsep", "mutex_t09_nsep_cov_ncomb"  \
 
      ]
 id_to_gene = load_id_to_gene()
@@ -289,7 +289,7 @@ for key in tqdm.tqdm(models):
 
     #input file path
     filepath = "../" + network_name + "/out/connected_components_original/" + key + "/"
-    our_path = "../" + network_name + "/out/connected_components_isolarge/" + key + "/"
+    our_path = "../" + network_name + "/out/tmp/connected_components_isolarge/" + key + "/"
 
     try:
         # Get the starting threshold from the file name at n =1000
@@ -304,18 +304,18 @@ for key in tqdm.tqdm(models):
         os.mkdir(our_path)
 
     LARGE_NUM = 100000
-    k = 3
+    k = 1
     our_E = sp.load_npz("/Volumes/My Passport/random_walk/"+ key+"_sparse_matrix_e.npz")
     E = our_E.toarray()
     # find threshold
-    num_start = 371  # max n
-    num_end = 371  # min n
+    num_start = 1000  # max n
+    num_end = 100  # min n
 
     # create the initial graph, omit the edges smaller than the threshold
-    print('DiGraph...')
+    #print('DiGraph...')
     N = len(id_to_gene)
     G = nx.DiGraph()
-    print('DiGraph...')
+    #print('DiGraph...')
     for i in range(N):
         G.add_node(i)
 
@@ -354,7 +354,7 @@ for key in tqdm.tqdm(models):
         threshold_found = 0
         num_target_genes = num_start
         while num_nodes > num_target_genes:
-            print(str(num_target_genes) + " " + str(num_nodes) + " " + str(iteration))
+            #print(str(num_target_genes) + " " + str(num_nodes) + " " + str(iteration))
 
             # remove smallest edge
 
@@ -397,7 +397,7 @@ for key in tqdm.tqdm(models):
         #list_graphs contain all comps
         #largest_comp contains the largest comp
 
-        outfilename = filepath + "cc_n" + str(num_target_genes) + "_d" + str(threshold_found) + ".txt"
+        outfilename = our_path + "cc_n" + str(num_target_genes) + "_d" + str(threshold_found) + ".txt"
 
 
         #prints the top [largest component size - difference] genes (or target genes)
@@ -406,11 +406,11 @@ for key in tqdm.tqdm(models):
                 f.write(" ".join([id_to_gene[idx] for idx in list_graphs[i]])+"\n")
 
 
-        largest_comp, largest_comp_index = find_largest_comp(list_graphs)
-        component_list = list_graphs[:]
+        #largest_comp, largest_comp_index = find_largest_comp(list_graphs)
+        #component_list = list_graphs[:]
         #print len(largest_comp)
-        largeset = set([id_to_gene[idx] for idx in largest_comp])
-        print len(largest_comp), " largeset", largeset
+        #largeset = set([id_to_gene[idx] for idx in largest_comp])
+        #print len(largest_comp), " largeset", largeset
 
         largest_gene_comp_list = []
         count = 0
@@ -426,7 +426,7 @@ for key in tqdm.tqdm(models):
 
 
         #inputs = component list, threshold (0 means largest component out degree)
-        final_comp_list_graphs = split_large_components(component_list)
+        #final_comp_list_graphs = split_large_components(component_list)
 
         # write gml from deleted genes
         # gmlpath = path + "del_genes_gml_n" + str(num_target_genes) + "largestComp.gml"
@@ -434,17 +434,17 @@ for key in tqdm.tqdm(models):
 
 
 
-        outfilename = path + "cc_n" + str(num_target_genes) + "_"+ str(len(largest_comp))+ "_"+\
-                      str(len(final_comp_list_graphs)) + "_d" + str(threshold_found) + ".txt"
-
-
-        #prints the top [largest component size - difference] genes (or target genes)
-        with open(outfilename, "w") as f:
-            for i in range(len(final_comp_list_graphs)):
-                for node_index in final_comp_list_graphs[i]:
-                    f.write(id_to_gene[node_index] + " ")
-                f.write("\n")
-            f.close()
+        # outfilename = path + "cc_n" + str(num_target_genes) + "_"+ str(len(largest_comp))+ "_"+\
+        #               str(len(final_comp_list_graphs)) + "_d" + str(threshold_found) + ".txt"
+        #
+        #
+        # #prints the top [largest component size - difference] genes (or target genes)
+        # with open(outfilename, "w") as f:
+        #     for i in range(len(final_comp_list_graphs)):
+        #         for node_index in final_comp_list_graphs[i]:
+        #             f.write(id_to_gene[node_index] + " ")
+        #         f.write("\n")
+        #     f.close()
 
 
 
