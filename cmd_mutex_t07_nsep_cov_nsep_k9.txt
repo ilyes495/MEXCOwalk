@@ -1,0 +1,849 @@
+Start Threshold   0.000014
+../hint/out/tmp/connected_components_isolarge/mutex_t07_nsep_cov_nsep/
+('N: ', 9859)
+Ended DiGraph...
+Nodes added to Graph!
+Edges bellow thresh deleted!
+0_9228_2290
+('number of nodes in the beginning is : ', 3466)
+Components number as fucntion of size: 
+
+(array([3466]), array([1]))
+a1000
+1000 3466 0
+('numcomps', 1)
+(array([3466]), array([1]))
+1000 3466 1
+('numcomps', 1)
+(array([3466]), array([1]))
+1000 3466 2
+('numcomps', 1)
+(array([3466]), array([1]))
+1000 3466 3
+('numcomps', 1)
+(array([3466]), array([1]))
+1000 3466 4
+('numcomps', 1)
+(array([3466]), array([1]))
+1000 3466 5
+('numcomps', 1)
+(array([3466]), array([1]))
+1000 3466 6
+('numcomps', 1)
+(array([3466]), array([1]))
+1000 3466 7
+('numcomps', 1)
+(array([3466]), array([1]))
+1000 3466 8
+('numcomps', 1)
+(array([3466]), array([1]))
+1000 3466 9
+('numcomps', 1)
+(array([3466]), array([1]))
+1000 3466 10
+('numcomps', 1)
+(array([3466]), array([1]))
+1000 3466 11
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 12
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 13
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 14
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 15
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 16
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 17
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 18
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 19
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 20
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 21
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 22
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 23
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 24
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 25
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 26
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 27
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 28
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 29
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 30
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 31
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 32
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 33
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 34
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 35
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 36
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 37
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 38
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 39
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 40
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 41
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 42
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 43
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 44
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 45
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 46
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 47
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 48
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 49
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 50
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 51
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 52
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 53
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 54
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 55
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 56
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 57
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 58
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 59
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 60
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 61
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 62
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 63
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 64
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 65
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 66
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 67
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 68
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 69
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 70
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 71
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 72
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 73
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 74
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 75
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 76
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 77
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 78
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 79
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 80
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 81
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 82
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 83
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 84
+('numcomps', 1)
+(array([3465]), array([1]))
+1000 3465 85
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 86
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 87
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 88
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 89
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 90
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 91
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 92
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 93
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 94
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 95
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 96
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 97
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 98
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 99
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 100
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 101
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 102
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 103
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 104
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 105
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 106
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 107
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 108
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 109
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 110
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 111
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 112
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 113
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 114
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 115
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 116
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 117
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 118
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 119
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 120
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 121
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 122
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 123
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 124
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 125
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 126
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 127
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 128
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 129
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 130
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 131
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 132
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 133
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 134
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 135
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 136
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 137
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 138
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 139
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 140
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 141
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 142
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 143
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 144
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 145
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 146
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 147
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 148
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 149
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 150
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 151
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 152
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 153
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 154
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 155
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 156
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 157
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 158
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 159
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 160
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 161
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 162
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 163
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 164
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 165
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 166
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 167
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 168
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 169
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 170
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 171
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 172
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 173
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 174
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 175
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 176
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 177
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 178
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 179
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 180
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 181
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 182
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 183
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 184
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 185
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 186
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 187
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 188
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 189
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 190
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 191
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 192
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 193
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 194
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 195
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 196
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 197
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 198
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 199
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 200
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 201
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 202
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 203
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 204
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 205
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 206
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 207
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 208
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 209
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 210
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 211
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 212
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 213
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 214
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 215
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 216
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 217
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 218
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 219
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 220
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 221
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 222
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 223
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 224
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 225
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 226
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 227
+('numcomps', 1)
+(array([3464]), array([1]))
+1000 3464 228
+('numcomps', 1)
+(array([3463]), array([1]))
+1000 3463 229
+('numcomps', 1)
+(array([3463]), array([1]))
+1000 3463 230
+('numcomps', 1)
+(array([3463]), array([1]))
+1000 3463 231
+('numcomps', 1)
+(array([3463]), array([1]))
+1000 3463 232
+('numcomps', 1)
+(array([3463]), array([1]))
+1000 3463 233
+('numcomps', 1)
+(array([3463]), array([1]))
+1000 3463 234
+('numcomps', 1)
+(array([3463]), array([1]))
+1000 3463 235
+('numcomps', 1)
+(array([3463]), array([1]))
+1000 3463 236
+('numcomps', 1)
+(array([3463]), array([1]))
+1000 3463 237
+('numcomps', 1)
+(array([3463]), array([1]))
+1000 3463 238
+('numcomps', 1)
+(array([3463]), array([1]))
+1000 3463 239
+('numcomps', 1)
+(array([3463]), array([1]))
+1000 3463 240
+('numcomps', 1)
+(array([3463]), array([1]))
+1000 3463 241
+('numcomps', 1)
+(array([3463]), array([1]))
+1000 3463 242
+('numcomps', 1)
+(array([3463]), array([1]))
+1000 3463 243
+('numcomps', 1)
+(array([3463]), array([1]))
+1000 3463 244
+('numcomps', 1)
+(array([3463]), array([1]))
+1000 3463 245
+('numcomps', 1)
+(array([3463]), array([1]))
+1000 3463 246
+('numcomps', 1)
+(array([3463]), array([1]))
+1000 3463 247
+('numcomps', 1)
+(array([3463]), array([1]))
+1000 3463 248
+('numcomps', 1)
+(array([3462]), array([1]))
+1000 3462 249
+('numcomps', 1)
+(array([3462]), array([1]))
+1000 3462 250
+('numcomps', 1)
+(array([3462]), array([1]))
+1000 3462 251
+('numcomps', 1)
+(array([3461]), array([1]))
+1000 3461 252
+('numcomps', 1)
+(array([3461]), array([1]))
+1000 3461 253
+('numcomps', 1)
+(array([3461]), array([1]))
+1000 3461 254
+('numcomps', 1)
+(array([3461]), array([1]))
+1000 3461 255
+('numcomps', 1)
+(array([3461]), array([1]))
+1000 3461 256
+('numcomps', 1)
+(array([3461]), array([1]))
+1000 3461 257
+('numcomps', 1)
+(array([3461]), array([1]))
+1000 3461 258
+('numcomps', 1)
+(array([3461]), array([1]))
+1000 3461 259
+('numcomps', 1)
+(array([3461]), array([1]))
+1000 3461 260
+('numcomps', 1)
+(array([3460]), array([1]))
+1000 3460 261
+('numcomps', 1)
+(array([3460]), array([1]))
+1000 3460 262
+('numcomps', 1)
+(array([3460]), array([1]))
+1000 3460 263
+('numcomps', 1)
+(array([3460]), array([1]))
+1000 3460 264
+('numcomps', 1)
+(array([3460]), array([1]))
+1000 3460 265
+('numcomps', 1)
+(array([3460]), array([1]))
+1000 3460 266
+('numcomps', 1)
+(array([3460]), array([1]))
+1000 3460 267
+('numcomps', 1)
+(array([3460]), array([1]))
+1000 3460 268
+('numcomps', 1)
+(array([3460]), array([1]))
+1000 3460 269
+('numcomps', 1)
+(array([3460]), array([1]))
+1000 3460 270
+('numcomps', 1)
+(array([3460]), array([1]))
+1000 3460 271
+('numcomps', 1)
+(array([3460]), array([1]))
+1000 3460 272
+('numcomps', 1)
+(array([3460]), array([1]))
+1000 3460 273
+('numcomps', 1)
+(array([3460]), array([1]))
+1000 3460 274
+('numcomps', 1)
+(array([3460]), array([1]))
+1000 3460 275
+('numcomps', 1)
+(array([3460]), array([1]))
+1000 3460 276
+('numcomps', 1)
+(array([3460]), array([1]))
+1000 3460 277
+('numcomps', 1)
+(array([3460]), array([1]))
+1000 3460 278
+('numcomps', 1)
+(array([3460]), array([1

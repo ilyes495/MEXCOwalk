@@ -22,7 +22,6 @@ def calculate_scores_for_subnetworks(filename, edge_list, outfile,outfile_tab, n
         t_density = 0.0
         t_covmutex = 0.0
 
-        total_genes = 0
         print >>fhout, 'num_comp\tcoverage\tmutex\tcov_mutex\tdensity'
         for component_line in connected_components:
             component = component_line.split()
@@ -31,7 +30,6 @@ def calculate_scores_for_subnetworks(filename, edge_list, outfile,outfile_tab, n
             individual_count = 0
             mult_count = 1
             for i in component:
-                total_genes+=1
                 if i not in data:
                     print(i + " not found" + filename)
                     continue
@@ -75,15 +73,13 @@ def calculate_scores_for_subnetworks(filename, edge_list, outfile,outfile_tab, n
             str(density)
             # scores.append(a[0]*coverage + a[1]*mutex + a[2]*density)
             scores.append([len(component), coverage, mutex, cov_mutex, density])
-
     avg_density = t_density / num_components
     avg_cov = t_coverage / num_components
     avg_mutex = t_mutex / num_components
     avg_covmutex = t_covmutex / num_components
 
-
     print >>fhout, '****AVERAGE ACROSS ALL MODULES*****'
-    print >>fhout, str(total_genes) + '\t' + str(num_components) + \
+    print >>fhout, str(num_genes) + '\t' + str(num_components) + \
     '\t' + str(t_density) + '\t' + str(avg_density) + \
     '\t' + str(t_coverage) + '\t' + str(avg_cov) + \
     '\t' + str(t_mutex) + '\t' + str(avg_mutex) + \
@@ -144,9 +140,9 @@ def read_cosmic_genes():
 def cosmic_overlap_analysis(our_file, hotnet2_file,cosmic_genes, module_name, num_genes):
     #print our_file
 
-    cosmic_file = '../hint/out/evaluation/{}.txt'.format(module_name)
-    cosmic_huge_file = '../hint/out/evaluation/{}_huge.txt'.format(module_name)
-    cosmic_tab_file = '../hint/out/evaluation_tab/{}.txt'.format(module_name)
+    cosmic_file = '../hint/out/tmp/evaluation/{}.txt'.format(module_name)
+    cosmic_huge_file = '../hint/out/tmp/evaluation/{}_huge.txt'.format(module_name)
+    cosmic_tab_file = '../hint/out/tmp/evaluation_tab/{}.txt'.format(module_name)
 
     #cosmic_genes = read_cosmic_genes()
     l = []
@@ -193,7 +189,7 @@ def cosmic_overlap_analysis(our_file, hotnet2_file,cosmic_genes, module_name, nu
 
     return [count_overlap_ours, count_overlap_hotnet2]
 
-def generate_cosmic_analysis_file(path_pre = "../hint/out/evaluation_tab/"):
+def generate_cosmic_analysis_file(path_pre = "../hint/out/tmp/evaluation_tab/"):
     d = {}
     for key in tqdm(models, desc='running cosmic analysis'):
         #print key + "\n"
@@ -221,7 +217,7 @@ def generate_cosmic_analysis_file(path_pre = "../hint/out/evaluation_tab/"):
         for k in models:
             ff.write(k + '\t')
         ff.write('\n')
-        num_genes_list = range(100,600,100)+[554]+range(600,900,100)+[806]+range(900,2600,100)
+        num_genes_list = range(100,1100,100)#+[371]+range(400,1100,100)
         for i in num_genes_list:
             ff.write(str(i))
             for key in models:
@@ -234,7 +230,7 @@ def generate_cosmic_analysis_file(path_pre = "../hint/out/evaluation_tab/"):
 
 
 
-def generate_our_eval_files(path_pre = "../hint/out/evaluation_tab/"):
+def generate_our_eval_files(path_pre = "../hint/out/tmp/evaluation_tab/"):
     eval_list = ['num_components', \
     't_density', 'avg_density', \
     't_coverage', 'avg_cov', \
@@ -269,7 +265,7 @@ def generate_our_eval_files(path_pre = "../hint/out/evaluation_tab/"):
             for k in models:
                 f.write(k + '\t')
             f.write('\n')
-            num_genes_list = range(100,600,100)+[554]+range(600,900,100)+[806]+range(900,2600,100)
+            num_genes_list = range(100,1100,100)#+[371]+range(400,1100,100)
             for i in num_genes_list:
                 f.write(str(i))
                 for key in models:
@@ -283,20 +279,20 @@ def calculate_weighted_scores():
     evals = [ 'iwavg_cov', 'wavg_mutex', 'wavg_density']
     evals_pos = [1, 2, 4]
 
-    dir_pre = "../hint/out/evaluation/"
+    dir_pre = "../hint/out/tmp/evaluation/"
     dir_post = "/optimized_function_comparison/"
 
 
     for i in trange(len(evals), desc='Calculating weighte scores'):
         eval = evals[i]
         pos = evals_pos[i]
-        with open("../hint/out/evaluation_tab/"+ eval + ".txt", "w") as eval_file:
+        with open("../hint/out/tmp/evaluation_tab/"+ eval + ".txt", "w") as eval_file:
             eval_file.write("N\t")
             for model in models:
                 eval_file.write(model + "\t")
 
             eval_file.write("\n")
-            num_genes_list =range(100,600,100)+[554]+range(600,900,100)+[806]+range(900,2600,100)
+            num_genes_list = range(100,1100,100)#+[371]+range(400,1100,100)
 
             for n in num_genes_list:
                 eval_file.write(str(n) + "\t")
@@ -355,9 +351,11 @@ def prep_file_paths(key):
 
 models = [
     "hotnet2",
-    "hier_hotnet2_k2", "hier_hotnet2_k3",\
-    # "memcover_v1", "memcover_v2", "memcover_v3",\
-    # "mutex", "cov", "mutex_cov", \
+    "mutex", "cov", "mutex_cov", \
+    'mutex_t07_nsep_cov_nsep',\
+    'mutex_t07_nsep_cov_nsep_k6',\
+    'mutex_t07_nsep_cov_nsep_k9',\
+    'mutex_t07_nsep_cov_nsep_k12'\
     # "mutex_wesme", "mutex_wesme_cov", \
     # "mutex_ncomb", "cov_ncomb", "mutex_ncomb_cov", \
     # "mutex_nsep", "cov_nsep", "mutex_nsep_cov", \
@@ -379,8 +377,8 @@ models = [
     # "mutex_t05_ncomb_cov_nsep", "mutex_t05_nsep_cov_ncomb", "mutex_t06_ncomb_cov_nsep", "mutex_t06_nsep_cov_ncomb", \
     # "mutex_t07_ncomb_cov_nsep", "mutex_t07_nsep_cov_ncomb", "mutex_t08_ncomb_cov_nsep", "mutex_t08_nsep_cov_ncomb", \
     # "mutex_t09_ncomb_cov_nsep", "mutex_t09_nsep_cov_ncomb",  \
-
-    #Memcover modules
+    #
+    # #Memcover modules
     # "memcover0.2",
     # "memcover0.08"
      ]
@@ -391,21 +389,21 @@ for key in tqdm([]):
     our_path_key = key #'mutex_t05_ncomb_cov'
     #if key == 'hotnet2': continue
 
-    hotnet_paths = prep_file_paths('../hint/out/connected_components_isolarge_n2500_whh/hotnet2/*.txt')
-    our_paths = prep_file_paths('../hint/out/connected_components_isolarge_n2500_whh/' + our_path_key +'/*.txt')
+    hotnet_paths = prep_file_paths('../hint/out/connected_components_isolarge/hotnet2/*.txt')
+    our_paths = prep_file_paths('../hint/out/tmp/connected_components_isolarge/' + our_path_key +'/*.txt')
     #print ('done printing paths')
-    # print('our paths: ', len(our_paths))
+    print('our paths: ', len(our_paths))
     # print('our paths: ', our_paths)
 
 
-    newpath = '../hint/out/evaluation/{0}'.format(our_path_key)
+    newpath = '../hint/out/tmp/evaluation/{0}'.format(our_path_key)
     if not os.path.exists(newpath):
         os.mkdir(newpath)
         newpathext = newpath + '/optimized_function_comparison'
         if not os.path.exists(newpathext):
             os.mkdir(newpathext)
 
-    newpath = '../hint/out/evaluation_tab/{0}'.format(our_path_key)
+    newpath = '../hint/out/tmp/evaluation_tab/{0}'.format(our_path_key)
     if not os.path.exists(newpath):
         os.mkdir(newpath)
     # os.system('mkdir ' + '../hint/out/evaluation/'+ our_path_key)
@@ -414,40 +412,27 @@ for key in tqdm([]):
     hotnet_list = []
     our_list = []
     edge_list_original = load_edge_list()
-    fhout = open('../hint/out/evaluation/'+ our_path_key + '/optimized_function_comparison/summary_' + our_path_key  +'.txt', 'w')
-    num_genes_list = range(100,600,100)+[554]+range(600,900,100)+[806]+range(900,2600,100)
-    #num_genes_list_hh = [554]+[806]
-    print(len(num_genes_list), len(our_paths))
+    fhout = open('../hint/out/tmp/evaluation/'+ our_path_key + '/optimized_function_comparison/summary_' + our_path_key  +'.txt', 'w')
+    num_genes_list = range(100,1100,100)#+[371]+range(400,1100,100)
+    #print(len(num_genes_list), len(our_paths)+1)
 
     skip_count = 0 # this is a trick to handle the invariance in the number of files
+    for i in trange(min(10, len(our_paths)), desc='running main evaluation'):
 
-    for i in trange(min(27, len(our_paths)), desc='running main evaluation'):
-        
-        num_genes = 806 if key == 'hier_hotnet2_k2' else(554 if  key == 'hier_hotnet2_k3' else  str(num_genes_list[i]))
-        #indices file index and hotnet file index
-
-        #if len(our_paths) == len()
-
-        #print "#",num_genes
-        # if (key == "hotnet2" or key == 'hier_hotnet_k2' or key == 'hier_hotnet_k3') and (num_genes == '554' or num_genes == '806'):
-        #     skip_count +=1
-        #     print('key is {} and num_genes is {}'.format(key, num_genes))
-        #     continue
-        # # COSMIC analysis
-        # print "skip_count", skip_count
-
-        hotnet_path = glob.glob('../hint/out/connected_components_isolarge_n2500_whh/hotnet2/cc_n{}_*'.format(num_genes))[0]
-        our_path = glob.glob('../hint/out/connected_components_isolarge_n2500_whh/{}/cc_n{}_*'.format(key,num_genes))[0]
-
-
+        num_genes = str(num_genes_list[i])
+        if (key == "hotnet2" or key == 'memcover0.08') and (num_genes == '371'):
+            skip_count +=1
+            print('key is {} and num_genes is {}'.format(key, num_genes))
+            continue
+        # COSMIC analysis
         module_name = our_path_key + '/cosmic_' + our_path_key
-        [our_overlap, hotnet2_overlap] = cosmic_overlap_analysis(our_path, hotnet_path, cosmic_genes, module_name, num_genes)
+        [our_overlap, hotnet2_overlap] = cosmic_overlap_analysis(our_paths[i-skip_count], hotnet_paths[i], cosmic_genes, module_name, num_genes)
         print >>fhout, our_overlap, hotnet2_overlap,
 
-        outfile = '../hint/out/evaluation/'+ our_path_key + '/optimized_function_comparison/' + our_path_key + '_' + str(num_genes) + '.txt'
-        outfile_tab = '../hint/out/evaluation_tab/'+ our_path_key + '/our_eval_' + our_path_key + '.txt'
+        outfile = '../hint/out/tmp/evaluation/'+ our_path_key + '/optimized_function_comparison/' + our_path_key + '_' + str(num_genes) + '.txt'
+        outfile_tab = '../hint/out/tmp/evaluation_tab/'+ our_path_key + '/our_eval_' + our_path_key + '.txt'
 
-        our_scores = calculate_scores_for_subnetworks(our_path, edge_list_original, outfile, outfile_tab, num_genes)
+        our_scores = calculate_scores_for_subnetworks(our_paths[i-skip_count], edge_list_original, outfile, outfile_tab, num_genes)
 
         for j in range(len(our_scores)):
             print >>fhout, our_scores[j],# hotnet_scores[j],

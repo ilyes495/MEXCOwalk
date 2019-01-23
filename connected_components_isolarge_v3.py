@@ -6,7 +6,8 @@ import operator
 import os
 from collections import deque
 import glob
-import tqdm
+from tqdm import tqdm, trange
+import numpy as np
 #change in 08.01.2019 corrected the large split part.
 
 
@@ -15,7 +16,7 @@ import tqdm
 # components with total number of genes N
 models = [
     # "hotnet2",
-    'mutex_t07_ncomb_cov'
+    "mutex_t07_nsep_cov_nsep",
     # "mutex", "mutex_cov", #"cov",\
     # "mutex_wesme", "mutex_wesme_cov", \
     # "mutex_ncomb", "cov_ncomb", "mutex_ncomb_cov", \
@@ -51,7 +52,7 @@ def find_largest_comp(list_comp_graph):
         if len(large) < len(list_comp_graph[i]):
             large = list_comp_graph[i]
             large_index = i
-    print "large", large
+    print ("large", large)
     return (large,large_index)
 
 def list_graph_to_list_comp(list_graph):
@@ -82,7 +83,7 @@ def find_max_outdegree(comp):
             max_out_degree = out_n
             largest_node_id = n
             largest_gene_id = id_to_gene[n]
-    print largest_gene_id
+    print (largest_gene_id)
 
     return (max_out_degree, largest_node_id, largest_gene_id)
 
@@ -97,7 +98,7 @@ def star_construction(large_comp, largest_node_id):
 
             all_neighbor_of_largest.update(e)
 
-    print "neighbors", all_neighbor_of_largest
+    print ("neighbors", all_neighbor_of_largest)
 
     all_neighbor_of_largest.remove(largest_node_id)
 
@@ -110,20 +111,20 @@ def star_construction(large_comp, largest_node_id):
                 if v != largest_node_id and (v not in all_neighbor_of_largest):
 
                     in_comp = False
-                    print "false", e
+                    print ("false", e)
                     break
             elif e[1] == u:
                 v = e[0]
 
                 if v != largest_node_id and (v not in all_neighbor_of_largest):
                     in_comp = False
-                    print "false", e
+                    print ("false", e)
                     break
 
         if in_comp == True:
             star_nodes_set.update([u])
 
-    print "\n\n", star_nodes_set, "\n\n"
+    print ("\n\n", star_nodes_set, "\n\n")
 
     return list(star_nodes_set)
 
@@ -131,13 +132,13 @@ def star_construction(large_comp, largest_node_id):
 #passes a list of component graph and returns connected commponents graph?
 
 
-def split_large_components(list_comp_graph, large_threshold = 0):
+def split_large_components(list_comp_graph, k,large_threshold = 0):
 
 
     list_comp = list_graph_to_list_comp(list_comp_graph)
     set_all_genes_before = set([n for comp in list_comp for n in comp])
 
-    threshold_small_comp = 3
+    threshold_small_comp = k
 
 
     gene_set = set()
@@ -149,7 +150,7 @@ def split_large_components(list_comp_graph, large_threshold = 0):
     #finding large graph threshold, take the max of max-out-degree of each component
     for comp in list_comp_graph:
          max_out_degree_pre, largest_node_id_pre, largest_gene_id_pre = find_max_outdegree(comp)
-         print "maxoutdegree", max_out_degree_pre
+         print ("maxoutdegree", max_out_degree_pre)
          if max_out_degree_all < max_out_degree_pre:
                max_out_degree_all = max_out_degree_pre
 
@@ -165,13 +166,13 @@ def split_large_components(list_comp_graph, large_threshold = 0):
     for comp in list_comp_graph:
         if len(comp)>= threshold_large_comp:
             list_large_components.append(comp)
-            print "\nanother large component added\n"
+            print ("\nanother large component added\n")
         else:
             list_graph_leftover.append(comp)
 
     #going through all large components
     all_modified_component_list = []
-    print "\nlenght of large comps\n",len(list_large_components)
+    print ("\nlenght of large comps\n",len(list_large_components))
     for lc in list_large_components:
         main_comp_list = []
         small_comp_list = []
@@ -179,24 +180,24 @@ def split_large_components(list_comp_graph, large_threshold = 0):
         large_comp_queue = deque()
         large_comp_queue.append(lc)
         while len(large_comp_queue) >0:
-            print "\nnew element in large queue\n"
+            print ("\nnew element in large queue\n")
             largest_comp = large_comp_queue.popleft()
-            print "len", len(largest_comp)
+            print ("len", len(largest_comp))
             max_out_degree, largest_node_id, largest_gene_id = find_max_outdegree(largest_comp)
 
             reduced_comps = largest_comp.copy()
 
             removable_nodes_list = star_construction(largest_comp,largest_node_id)
-            print "\nremovable nodes list", removable_nodes_list
+            print ("\nremovable nodes list", removable_nodes_list)
 
-            print "\nnodes before removal", len(reduced_comps)
-            print "edges before removal", len(reduced_comps.edges)
+            print ("\nnodes before removal", len(reduced_comps))
+            print ("edges before removal", len(reduced_comps.edges))
 
             #reduced comps -> largest graph - large gene and neighbors
             reduced_comps.remove_nodes_from(removable_nodes_list)
 
-            print "\nnodes after removal", len(reduced_comps)
-            print "edges after removal", len(reduced_comps.edges)
+            print ("\nnodes after removal", len(reduced_comps))
+            print ("edges after removal", len(reduced_comps.edges))
 
             #adding to LOM or SCL
             #checking if star construction is less than k
@@ -209,21 +210,21 @@ def split_large_components(list_comp_graph, large_threshold = 0):
             scc = nx.strongly_connected_components(reduced_comps)
 
             for comp in scc:
-                print "comp", comp
+                print ("comp", comp)
                 if len(comp)> threshold_large_comp:
                     g = reduced_comps.subgraph(comp).copy()
                     large_comp_queue.append(g)
-                    print "\nlarge_comp_queue"
+                    print ("\nlarge_comp_queue")
                 elif len(comp)< threshold_small_comp:
                     g = reduced_comps.subgraph(comp).copy()
                     small_comp_list.append(g)
-                    print "\nsmall"
+                    print ("\nsmall")
                 else:
                     g = reduced_comps.subgraph(comp).copy()
                     main_comp_list.append(g)
-                    print "\nLOM"
+                    print ("\nLOM")
 
-        print "len list main b4", len(main_comp_list )
+        print ("len list main b4", len(main_comp_list ))
 
         temp_list = []
         for scm in range(len(main_comp_list)):
@@ -235,7 +236,7 @@ def split_large_components(list_comp_graph, large_threshold = 0):
                 temp_list.append(main_comp_list[scm])
 
         main_comp_list = temp_list[:]
-        print "len list main aftr", len(main_comp_list)
+        print ("len list main aftr", len(main_comp_list))
 
         for scomp in range(len(small_comp_list)):
             max_comp_score = 0
@@ -255,20 +256,20 @@ def split_large_components(list_comp_graph, large_threshold = 0):
                     max_comp_score = comp_score
                     max_comp_index = comp_index
 
-            print "\ncomponent", small_comp_list[scomp].nodes, "maxcomp score+index", max_comp_score, max_comp_index
-            print "list of comps nodes before", len (main_comp_list[max_comp_index]),main_comp_list[max_comp_index].nodes
+            print ("\ncomponent", small_comp_list[scomp].nodes, "maxcomp score+index", max_comp_score, max_comp_index)
+            print ("list of comps nodes before", len (main_comp_list[max_comp_index]),main_comp_list[max_comp_index].nodes)
             main_comp_list[max_comp_index].add_nodes_from(small_comp_list[scomp])
 
             temp_subgraph_nodes = main_comp_list[max_comp_index].nodes
-            print "tempsubg", temp_subgraph_nodes
+            print ("tempsubg", temp_subgraph_nodes)
             # also add the edges
             main_comp_list[max_comp_index] = lc.subgraph(temp_subgraph_nodes).copy()
-            print "list of comps nodes after", len(main_comp_list[max_comp_index]), main_comp_list[max_comp_index].nodes
+            print( "list of comps nodes after", len(main_comp_list[max_comp_index]), main_comp_list[max_comp_index].nodes)
 
         all_modified_component_list.extend(main_comp_list[:])
 
     for x in all_modified_component_list:
-         print x.nodes
+         print (x.nodes)
 
     set_all_genes_after = set([n for comp in list_graph_leftover[:] + all_modified_component_list[:] for n in comp.nodes])
 
@@ -280,7 +281,7 @@ def split_large_components(list_comp_graph, large_threshold = 0):
 
 
 
-for key in tqdm.tqdm(models):
+for key in tqdm(models):
 
     #key = "mutex_nsep_cov"
     #threshold_start = 0.00007  # for 1000ncomb
@@ -289,41 +290,52 @@ for key in tqdm.tqdm(models):
 
     #input file path
     filepath = "../" + network_name + "/out/connected_components_original/" + key + "/"
-    our_path = "../" + network_name + "/out/connected_components_isolarge/" + key + "/"
+    our_path = "../" + network_name + "/out/tmp/connected_components_isolarge/" + key + "/"
+    _path_ = "../" + network_name + "/out/tmp/connected_components/" + key + "/"
 
+    if not os.path.exists(_path_):
+        os.mkdir(_path_)
     try:
         # Get the starting threshold from the file name at n =1000
-        threshold_start = float(glob.glob(filepath+'cc_n1000_k3_*')[0].split('/')[-1].split('d')[1][:-4])
+        threshold_start = float(glob.glob(filepath+'cc_n1000_k3_*')[0].split('/')[-1].split('d')[1][:-4])-7e-5
+        print('Start Threshold {:10f}'.format(threshold_start))
     except:
         print(glob.glob(filepath+'cc_n1000_*'))
 
     path = our_path
-    print path
+    print (path)
 
     if not os.path.exists(our_path):
         os.mkdir(our_path)
 
     LARGE_NUM = 100000
-    k = 3
-    our_E = sp.load_npz("../" + network_name + "/random_walk/"+ key+"_sparse_matrix_e.npz")
+    k = 12
+    our_E = sp.load_npz("../" + network_name + "/out/random_walk/"+ key+"_sparse_matrix_e.npz")
     E = our_E.toarray()
     # find threshold
     num_start = 1000  # max n
-    num_end = 1000  # min n
+    num_end = 100  # min n
 
     # create the initial graph, omit the edges smaller than the threshold
     #print('DiGraph...')
     N = len(id_to_gene)
+    print ('N: ',N)
     G = nx.DiGraph()
-    #print('DiGraph...')
+    print('Ended DiGraph...')
     for i in range(N):
         G.add_node(i)
-
-    for i in range(N):
+    print('Nodes added to Graph!')
+    edge_count = 0
+    t = trange(N, desc = 'First loop {}'.format(edge_count))
+    for i in t:
+        t.set_description('First loop {}'.format(edge_count))
+        t.refresh()
         for j in range(N):
             if E[i][j] > threshold_start:
+                edge_count +=1
                 G.add_edge(j, i)
 
+    print('Edges bellow thresh deleted!')
     # find the list of the connected components
     list_graphs = []
     num_nodes = 0
@@ -344,17 +356,27 @@ for key in tqdm.tqdm(models):
                     smallest_edge_str = key
                     smallest_weight = E[v][u]
             count_comp += 1
-            print smallest_edge_str
-    print 'number of nodes in the beginning is : ', num_nodes
-    print smallest_edge_str
+            print (smallest_edge_str)
+    print ('number of nodes in the beginning is : ', num_nodes)
+    assert num_nodes > num_start, "number of nodes is samller than {}".format(num_start)
+
+    print('Components number as fucntion of size: \n')
+    print(np.unique([len(c.nodes()) for c in list_graphs ], return_counts = True))
+    #print smallest_edge_str
 
     while num_start >= num_end:
+        #last_single_comp = []
+        #signle_node_max = int(num_start /2) # This is set randomly,
+        # it's better to get a better approximite number from mecover's result
+
+        # Count the number of single nodes obtained by removing smaller edge
+        #count_single_node = 0
         print("a" + str(num_start))
         iteration = 0
         threshold_found = 0
         num_target_genes = num_start
         while num_nodes > num_target_genes:
-            #print(str(num_target_genes) + " " + str(num_nodes) + " " + str(iteration))
+            print(str(num_target_genes) + " " + str(num_nodes) + " " + str(iteration))
 
             # remove smallest edge
 
@@ -374,9 +396,19 @@ for key in tqdm.tqdm(models):
                 if len(comp) >= k:
                     list_graphs.append(subG.subgraph(comp).copy())
                     num_nodes += len(comp)
+                # The comp is of size 1
+                # else:
+                #     # if there is enough in the list
+                #     if len(last_single_comp) < signle_node_max:
+                #         last_single_comp.append(comp)
+                    # else:
+                    #     # pop the first element, than insert at the end
+                    #     last_single_comp.pop(0)
+                    #     last_single_comp.append(comp)
+
 
             num_comps = len(list_graphs)
-            print "numcomps", num_comps
+            print ("numcomps", num_comps)
             smallest_weight = LARGE_NUM
             smallest_edge_str = ''
             for i in range(num_comps):
@@ -390,27 +422,40 @@ for key in tqdm.tqdm(models):
                             key = str(i) + '_' + str(u) + '_' + str(v)
                             smallest_edge_str = key
                             smallest_weight = E[v][u]
+            print(np.unique([len(c.nodes()) for c in list_graphs ], return_counts = True))
+
+            if smallest_edge_str == '':
+                print('smallest_weight: ', smallest_weight)
+
+            # If the maximum number of single nodes is reached,
+            # change the threshold of numberbe of components to k+1
+
             iteration += 1
+
+        print(np.unique([len(c.nodes()) for c in list_graphs ], return_counts = True))
+        # print('list graph {}, number of single node modules {}'.format(len(list_graphs), len(last_single_comp) ))
 
         ################################################################################################################
         #finding largest component
         #list_graphs contain all comps
         #largest_comp contains the largest comp
 
-        outfilename = filepath + "cc_n" + str(num_target_genes) + "_k" + str(k)+"_d" + str(threshold_found) + ".txt"
+        outfilename = _path_ + "cc_n" + str(num_target_genes) +"_k"+ str(k)+"_d" + str(threshold_found) + ".txt"
 
 
         #prints the top [largest component size - difference] genes (or target genes)
         with open(outfilename, "w") as f:
             for i in range(len(list_graphs)):
                 f.write(" ".join([id_to_gene[idx] for idx in list_graphs[i]])+"\n")
+            # for i in range(len(last_single_comp)):
+            #     f.write(" ".join([id_to_gene[idx] for idx in last_single_comp[i]])+"\n")
 
 
-        #largest_comp, largest_comp_index = find_largest_comp(list_graphs)
-        #component_list = list_graphs[:]
-        #print len(largest_comp)
-        #largeset = set([id_to_gene[idx] for idx in largest_comp])
-        #print len(largest_comp), " largeset", largeset
+        largest_comp, largest_comp_index = find_largest_comp(list_graphs)
+        component_list = list_graphs[:]
+        print (len(largest_comp))
+        largeset = set([id_to_gene[idx] for idx in largest_comp])
+        print (len(largest_comp), " largeset", largeset)
 
         largest_gene_comp_list = []
         count = 0
@@ -425,8 +470,8 @@ for key in tqdm.tqdm(models):
         # 6: The first instance we only work with the largest component
 
 
-        #inputs = component list, threshold (0 means largest component out degree)
-        final_comp_list_graphs = split_large_components(component_list)
+        #inputs = component list, k, threshold (0 means largest component out degree)
+        final_comp_list_graphs = split_large_components(component_list, k)
 
         # write gml from deleted genes
         # gmlpath = path + "del_genes_gml_n" + str(num_target_genes) + "largestComp.gml"

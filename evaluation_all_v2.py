@@ -317,7 +317,7 @@ def calculate_weighted_scores():
                                     score += ((1-(float(line[0])/n))) * float(line[pos])
                                     #score += float(line[pos])/float(line[0])
                                     genes += float(line[0])
-                                score /= weight_sum
+                                score /= weight_sum 
                             else:
                                 score = 0.0
                                 genes = 0
@@ -422,7 +422,7 @@ for key in tqdm([]):
     skip_count = 0 # this is a trick to handle the invariance in the number of files
 
     for i in trange(min(27, len(our_paths)), desc='running main evaluation'):
-        
+        special_list = [554,806]
         num_genes = 806 if key == 'hier_hotnet2_k2' else(554 if  key == 'hier_hotnet2_k3' else  str(num_genes_list[i]))
         #indices file index and hotnet file index
 
