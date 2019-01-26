@@ -334,7 +334,7 @@ for key in tqdm(models):
             if E[i][j] > threshold_start:
                 edge_count +=1
                 G.add_edge(j, i)
-
+                
     print('Edges bellow thresh deleted!')
     # find the list of the connected components
     list_graphs = []

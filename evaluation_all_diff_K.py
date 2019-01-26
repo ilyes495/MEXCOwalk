@@ -4,6 +4,9 @@ import os
 import math
 import operator
 from tqdm import trange, tqdm
+from matplotlib import pyplot as plt
+#from matplotlib import rcParams
+from pylab import *
 
 def calculate_scores_for_subnetworks(filename, edge_list, outfile,outfile_tab, num_genes):
 
@@ -144,9 +147,9 @@ def read_cosmic_genes():
 def cosmic_overlap_analysis(our_file, hotnet2_file,cosmic_genes, module_name, num_genes):
     #print our_file
 
-    cosmic_file = '../hint/out/evaluation/{}.txt'.format(module_name)
-    cosmic_huge_file = '../hint/out/evaluation/{}_huge.txt'.format(module_name)
-    cosmic_tab_file = '../hint/out/evaluation_tab/{}.txt'.format(module_name)
+    cosmic_file = '../hint/out/Results different K values/evaluation/{}.txt'.format(module_name)
+    cosmic_huge_file = '../hint/out/Results different K values/evaluation/{}_huge.txt'.format(module_name)
+    cosmic_tab_file = '../hint/out/Results different K values/evaluation_tab/{}.txt'.format(module_name)
 
     #cosmic_genes = read_cosmic_genes()
     l = []
@@ -193,7 +196,7 @@ def cosmic_overlap_analysis(our_file, hotnet2_file,cosmic_genes, module_name, nu
 
     return [count_overlap_ours, count_overlap_hotnet2]
 
-def generate_cosmic_analysis_file(path_pre = "../hint/out/evaluation_tab/"):
+def generate_cosmic_analysis_file(path_pre = "../hint/out/Results different K values/evaluation_tab/"):
     d = {}
     for key in tqdm(models, desc='running cosmic analysis'):
         #print key + "\n"
@@ -234,7 +237,7 @@ def generate_cosmic_analysis_file(path_pre = "../hint/out/evaluation_tab/"):
 
 
 
-def generate_our_eval_files(path_pre = "../hint/out/evaluation_tab/"):
+def generate_our_eval_files(path_pre = "../hint/out/Results different K values/evaluation_tab/"):
     eval_list = ['num_components', \
     't_density', 'avg_density', \
     't_coverage', 'avg_cov', \
@@ -283,14 +286,14 @@ def calculate_weighted_scores():
     evals = [ 'iwavg_cov', 'wavg_mutex', 'wavg_density']
     evals_pos = [1, 2, 4]
 
-    dir_pre = "../hint/out/evaluation/"
+    dir_pre = "../hint/out/Results different K values/evaluation/"
     dir_post = "/optimized_function_comparison/"
 
 
     for i in trange(len(evals), desc='Calculating weighte scores'):
         eval = evals[i]
         pos = evals_pos[i]
-        with open("../hint/out/evaluation_tab/"+ eval + ".txt", "w") as eval_file:
+        with open("../hint/out/Results different K values/evaluation_tab/"+ eval + ".txt", "w") as eval_file:
             eval_file.write("N\t")
             for model in models:
                 eval_file.write(model + "\t")
@@ -317,7 +320,7 @@ def calculate_weighted_scores():
                                     score += ((1-(float(line[0])/n))) * float(line[pos])
                                     #score += float(line[pos])/float(line[0])
                                     genes += float(line[0])
-                                score /= weight_sum 
+                                score /= weight_sum
                             else:
                                 score = 0.0
                                 genes = 0
@@ -354,35 +357,10 @@ def prep_file_paths(key):
     return paths
 
 models = [
-    "hotnet2",
-    "hier_hotnet2_k2", "hier_hotnet2_k3",\
-    # "memcover_v1", "memcover_v2", "memcover_v3",\
-    # "mutex", "cov", "mutex_cov", \
-    # "mutex_wesme", "mutex_wesme_cov", \
-    # "mutex_ncomb", "cov_ncomb", "mutex_ncomb_cov", \
-    # "mutex_nsep", "cov_nsep", "mutex_nsep_cov", \
-    # "mutex_t10_cov", \
-    #
-    # #these have common threshold > 0.0002
-    # "mutex_t05_ncomb_cov", "mutex_t05_nsep_cov", "mutex_t06_ncomb_cov",
-    # "mutex_t06_nsep_cov", \
-    # "mutex_t07_ncomb_cov", "mutex_t07_nsep_cov", "mutex_t08_ncomb_cov", "mutex_t08_nsep_cov", \
-    # "mutex_t09_ncomb_cov", "mutex_t09_nsep_cov",\
-    #
-    # #these have threshold >0.00007
-    # "mutex_t05_ncomb_cov_ncomb", "mutex_t05_nsep_cov_nsep", \
-    # "mutex_t06_ncomb_cov_ncomb", "mutex_t06_nsep_cov_nsep", \
-    #  "mutex_t07_ncomb_cov_ncomb",  "mutex_t07_nsep_cov_nsep", \
-    #  "mutex_t08_ncomb_cov_ncomb",  "mutex_t08_nsep_cov_nsep", \
-    #  "mutex_t09_ncomb_cov_ncomb", "mutex_t09_nsep_cov_nsep", \
-    #
-    # "mutex_t05_ncomb_cov_nsep", "mutex_t05_nsep_cov_ncomb", "mutex_t06_ncomb_cov_nsep", "mutex_t06_nsep_cov_ncomb", \
-    # "mutex_t07_ncomb_cov_nsep", "mutex_t07_nsep_cov_ncomb", "mutex_t08_ncomb_cov_nsep", "mutex_t08_nsep_cov_ncomb", \
-    # "mutex_t09_ncomb_cov_nsep", "mutex_t09_nsep_cov_ncomb",  \
-
-    #Memcover modules
-    # "memcover0.2",
-    # "memcover0.08"
+    'mutex_t07_nsep_cov_k3',\
+    'mutex_t07_nsep_cov_k6',\
+    'mutex_t07_nsep_cov_k9',\
+    'mutex_t07_nsep_cov_k12'\
      ]
 # Read the file once, instead of reading it in a loop many times
 cosmic_genes = read_cosmic_genes()
@@ -391,38 +369,38 @@ for key in tqdm([]):
     our_path_key = key #'mutex_t05_ncomb_cov'
     #if key == 'hotnet2': continue
 
-    hotnet_paths = prep_file_paths('../hint/out/connected_components_isolarge_n2500_whh/hotnet2/*.txt')
-    our_paths = prep_file_paths('../hint/out/connected_components_isolarge_n2500_whh/' + our_path_key +'/*.txt')
+    hotnet_paths = prep_file_paths('../hint/out/Results different K values/connected_components_isolarge/hotnet2/*.txt')
+    our_paths = prep_file_paths('../hint/out/Results different K values/connected_components_isolarge/' + our_path_key +'/*.txt')
     #print ('done printing paths')
     # print('our paths: ', len(our_paths))
     # print('our paths: ', our_paths)
 
 
-    newpath = '../hint/out/evaluation/{0}'.format(our_path_key)
+    newpath = '../hint/out/Results different K values/evaluation/{0}'.format(our_path_key)
     if not os.path.exists(newpath):
         os.mkdir(newpath)
         newpathext = newpath + '/optimized_function_comparison'
         if not os.path.exists(newpathext):
             os.mkdir(newpathext)
 
-    newpath = '../hint/out/evaluation_tab/{0}'.format(our_path_key)
+    newpath = '../hint/out/Results different K values/evaluation_tab/{0}'.format(our_path_key)
     if not os.path.exists(newpath):
         os.mkdir(newpath)
-    # os.system('mkdir ' + '../hint/out/evaluation/'+ our_path_key)
-    # os.system('mkdir ' + '../hint/out/evaluation/'+ our_path_key + '/optimized_function_comparison')
+    # os.system('mkdir ' + '../hint/out/Results different K values/evaluation/'+ our_path_key)
+    # os.system('mkdir ' + '../hint/out/Results different K values/evaluation/'+ our_path_key + '/optimized_function_comparison')
 
     hotnet_list = []
     our_list = []
     edge_list_original = load_edge_list()
-    fhout = open('../hint/out/evaluation/'+ our_path_key + '/optimized_function_comparison/summary_' + our_path_key  +'.txt', 'w')
+    fhout = open('../hint/out/Results different K values/evaluation/'+ our_path_key + '/optimized_function_comparison/summary_' + our_path_key  +'.txt', 'w')
     num_genes_list = range(100,600,100)+[554]+range(600,900,100)+[806]+range(900,2600,100)
     #num_genes_list_hh = [554]+[806]
-    print(len(num_genes_list), len(our_paths))
+    # print(len(num_genes_list), len(our_paths))
 
     skip_count = 0 # this is a trick to handle the invariance in the number of files
 
     for i in trange(min(27, len(our_paths)), desc='running main evaluation'):
-        special_list = [554,806]
+
         num_genes = 806 if key == 'hier_hotnet2_k2' else(554 if  key == 'hier_hotnet2_k3' else  str(num_genes_list[i]))
         #indices file index and hotnet file index
 
@@ -436,16 +414,16 @@ for key in tqdm([]):
         # # COSMIC analysis
         # print "skip_count", skip_count
 
-        hotnet_path = glob.glob('../hint/out/connected_components_isolarge_n2500_whh/hotnet2/cc_n{}_*'.format(num_genes))[0]
-        our_path = glob.glob('../hint/out/connected_components_isolarge_n2500_whh/{}/cc_n{}_*'.format(key,num_genes))[0]
+        hotnet_path = glob.glob('../hint/out/Results different K values/connected_components_isolarge/hotnet2/cc_n{}_*'.format(num_genes))[0]
+        our_path = glob.glob('../hint/out/Results different K values/connected_components_isolarge/{}/cc_n{}_*'.format(key,num_genes))[0]
 
 
         module_name = our_path_key + '/cosmic_' + our_path_key
         [our_overlap, hotnet2_overlap] = cosmic_overlap_analysis(our_path, hotnet_path, cosmic_genes, module_name, num_genes)
         print >>fhout, our_overlap, hotnet2_overlap,
 
-        outfile = '../hint/out/evaluation/'+ our_path_key + '/optimized_function_comparison/' + our_path_key + '_' + str(num_genes) + '.txt'
-        outfile_tab = '../hint/out/evaluation_tab/'+ our_path_key + '/our_eval_' + our_path_key + '.txt'
+        outfile = '../hint/out/Results different K values/evaluation/'+ our_path_key + '/optimized_function_comparison/' + our_path_key + '_' + str(num_genes) + '.txt'
+        outfile_tab = '../hint/out/Results different K values/evaluation_tab/'+ our_path_key + '/our_eval_' + our_path_key + '.txt'
 
         our_scores = calculate_scores_for_subnetworks(our_path, edge_list_original, outfile, outfile_tab, num_genes)
 
@@ -456,6 +434,53 @@ for key in tqdm([]):
 
     fhout.close()
 
-generate_cosmic_analysis_file()
-generate_our_eval_files()
-calculate_weighted_scores()
+# generate_cosmic_analysis_file()
+# generate_our_eval_files()
+# calculate_weighted_scores()
+
+
+ps = ['iwavg_cov','wavg_mutex','wavg_covmutex']
+labels = ['Coverage Score (CS)', 'Mutual Exclusion score ( MS )',  'Driver Module Set Score (DMSS)' ]
+colors = ['C4', 'C0', 'C1', 'C2', 'C3']
+for p,l in zip(ps,labels):
+    Ns= []
+    with open('../hint/out/Results different K values/evaluation_tab/{}.txt'.format(p)) as f:
+        lines = f.readlines()
+        models_ = lines[0].rstrip().split()[1:]
+        model2w = {s:[] for s in models_}
+        for line in lines[1:]:
+            line = line.rstrip().split()
+            Ns.append(int(line[0]))
+            for m,w in zip(models_, line[1:]):
+                model2w[m].append(float(w))
+    axes(frameon=0)
+    for m,c in zip(models, colors):
+        plot(Ns, model2w[m], '-o', color = c)
+
+    art = []
+    legend_ = [
+        'MEXCOwalk_mms3',
+        'MEXCOwalk_mms6',
+        'MEXCOwalk_mms9',
+        'MEXCOwalk_mms12',
+    ]
+    legend = plt.legend(legend_, loc=8,fancybox=True, fontsize= 'small', framealpha=0,
+                        edgecolor = 'b', ncol= 2, bbox_to_anchor=(0.5,-0.25))
+    art.append(legend)
+    frame = legend.get_frame()
+    plt.xlabel('total_genes')
+    plt.ylabel(l)
+
+    xtick = list(range(100,2600,200))#+[554]+ list(range(600,800, 200))+[806]+list(range(900, 2600, 200))
+    xticks(xtick, fontsize='x-small')
+    if p == 'iwavg_cov':
+        plt.ylim(-0.01, 0.6)
+    elif p == 'wavg_mutex':
+        plt.ylim(0.39, 1.01)
+    else:
+        plt.ylim(-0.01, 0.41)
+    # axes(frameon=0)
+    grid()
+    plt.savefig('../results/different Ks/plots/{}.pdf'.format(p),format = 'pdf',additional_artists=art,
+                bbox_inches="tight", dpi = 800)
+    plt.close()

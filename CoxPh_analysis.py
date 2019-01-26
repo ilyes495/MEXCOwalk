@@ -1,4 +1,4 @@
-from lifelines.datasets import load_rossi
+from scipy.stats import norm
 from lifelines import CoxPHFitter
 # %matplotlib inline
 import os
@@ -6,8 +6,10 @@ from os import path
 from glob import glob
 import numpy as np
 import pandas as pd
-from tqdm import tqdm, trange
+
 from utils import *
+import sys, io
+import warnings
 
 # for each module
 # for significant cancer:
@@ -47,7 +49,7 @@ def get_modules_cancer(model ='mutex_t07_nsep_cov_nsep' , n = 100):
 
 def get_data(modules, cancer ):
     clinical_data = clinic_file.format(cancer)
-    df_clinic = pd.read_csv(clinic_path+clinical_data, usecols = ['patient_id','event','time_to_event'], delimiter = '\t', low_memory=False)
+    df_clinic = pd.read_csv(clinic_path+clinical_data, usecols = ['patient_id','age', 'gender','event','time_to_event'], delimiter = '\t', low_memory=False)
     # patients = df_clinic['patient_id'].values
     df_clinic = df_clinic.set_index('patient_id')
     df_clinic.index.names = ['patients']
@@ -62,22 +64,31 @@ def get_data(modules, cancer ):
     df = df.T[modules].astype('float')
     # df.index.names = ['patients']
     df.columns.name = 'genes'
-    #if cancer != 'LAML':
-    keep_patient = [int(x.split('-')[3][:2]) < 10 for x in df.index ]
-    # else:
-    #     keep_patient = [x.split('-')[3][:2] == '03' for x in df.index]
+
+    if cancer != 'LAML':
+        keep_patient = [x.split('-')[3][:2] == '01' for x in df.index ]
+    else:
+        keep_patient = [x.split('-')[3][:2] == '03' for x in df.index]
 
     df = df.loc[keep_patient]
     df.index = ['-'.join(x.split('-')[:3]) for x in df.index]
     df.index.names = ['patients']
 
+    df = df.apply(invers_norm, axis = 0)
+
     df2 = df_clinic.join(df)
-    df2 = df2.loc[~df2[df2.columns[2:]].isnull().any(axis=1)]
+    df2 = df2.loc[~df2[df2.columns[4:]].isnull().any(axis=1)]
 
     print('Data loaded!')
     return df2
 
-
+def invers_norm(data):
+    rank = np.argsort(data)
+    q = [0 for _ in range(len(rank))]
+    for i,k in enumerate(rank):
+        q[k] = i+1
+    q = (np.array(q)-0.5) /len(q)
+    return norm.ppf(q)
 
 results_path = '../results/CoxPh/'
 comps, significant_cancers = get_modules_cancer()
@@ -96,7 +107,7 @@ id2module = {i:str(m) for i,m in enumerate(comps)}
 
 all_genes = [g for c in comps for g in c]
 
-for cancer in ['GBM']:
+for cancer in cancer_types:
     if not cancer in cancer2modules.keys() :
         print('{} skipped'.format(cancer))
         continue
@@ -108,23 +119,43 @@ for cancer in ['GBM']:
         df = get_data(all_genes, cancer)
 
 
-    for module in ['NOTCH1']:#cancer2modules[cancer]:
+    for module in cancer2modules[cancer]:
 
         module_id = module2id[str(module)]
         if not os.path.exists(results_path+'{}/'.format(module_id)):
             os.mkdir(results_path+'{}/'.format(module_id))
         csv_path = results_path+'{}/{}.csv'.format(module_id, cancer)
 
-        tmp_df  = df[module+['event','time_to_event']]
-        cph = CoxPHFitter()
-        cph.fit(tmp_df, duration_col='time_to_event', event_col='event', show_progress=False)
-        s = cph.summary
-        if str(module) in results.keys():
-            results[str(module)].append((s['exp(coef)'], s['p']))
+        if not cancer in ['OV', 'UCEC']:
+            tmp_df  = df[module+['age', 'gender','event','time_to_event']]
+            cph = CoxPHFitter()
+            cph.fit(tmp_df, duration_col='time_to_event', event_col='event', show_progress=False)
         else:
-            results[str(module)] = [(s['exp(coef)'], s['p'])]
+            tmp_df  = df[module+['age','event','time_to_event']]
+            cph = CoxPHFitter()
+            cph.fit(tmp_df, duration_col='time_to_event', event_col='event', show_progress=False)
+        s = cph.summary
+
+        # capture the output of print_summary()
+        stdout = sys.stdout
+        sys.stdout = io.StringIO()
+        cph.print_summary()
+        output = sys.stdout.getvalue()
+        sys.stdout = stdout
+
+        if str(module) in results.keys():
+            results[str(module)].append('Cancer: {} \n'.format(cancer)+str(output))
+        else:
+            results[str(module)] = ['Cancer: {} \n'.format(cancer)+str(output)]
 
         s.to_csv(csv_path)
+
+for m in module2id.keys():
+    if not m in results.keys(): continue
+    module_id = module2id[str(m)]
+    txt_path = results_path+'{}/summary.txt'.format(module_id)
+    with open(txt_path, 'w') as f:
+        f.write('\n\n'.join(results[m]))
 
 # for cancer in cancer_types:
 #     if not cancer in cancer2modules.keys(): continue

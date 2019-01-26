@@ -4,6 +4,9 @@ import os
 import math
 import operator
 from tqdm import trange, tqdm
+from matplotlib import pyplot as plt
+#from matplotlib import rcParams
+from pylab import *
 
 def calculate_scores_for_subnetworks(filename, edge_list, outfile,outfile_tab, num_genes):
 
@@ -353,37 +356,8 @@ def prep_file_paths(key):
         paths.append(sorted_dict[i][1])
     return paths
 
-models = [
-    "hotnet2",
-    "hier_hotnet2_k2", "hier_hotnet2_k3",\
-    # "memcover_v1", "memcover_v2", "memcover_v3",\
-    # "mutex", "cov", "mutex_cov", \
-    # "mutex_wesme", "mutex_wesme_cov", \
-    # "mutex_ncomb", "cov_ncomb", "mutex_ncomb_cov", \
-    # "mutex_nsep", "cov_nsep", "mutex_nsep_cov", \
-    # "mutex_t10_cov", \
-    #
-    # #these have common threshold > 0.0002
-    # "mutex_t05_ncomb_cov", "mutex_t05_nsep_cov", "mutex_t06_ncomb_cov",
-    # "mutex_t06_nsep_cov", \
-    # "mutex_t07_ncomb_cov", "mutex_t07_nsep_cov", "mutex_t08_ncomb_cov", "mutex_t08_nsep_cov", \
-    # "mutex_t09_ncomb_cov", "mutex_t09_nsep_cov",\
-    #
-    # #these have threshold >0.00007
-    # "mutex_t05_ncomb_cov_ncomb", "mutex_t05_nsep_cov_nsep", \
-    # "mutex_t06_ncomb_cov_ncomb", "mutex_t06_nsep_cov_nsep", \
-    #  "mutex_t07_ncomb_cov_ncomb",  "mutex_t07_nsep_cov_nsep", \
-    #  "mutex_t08_ncomb_cov_ncomb",  "mutex_t08_nsep_cov_nsep", \
-    #  "mutex_t09_ncomb_cov_ncomb", "mutex_t09_nsep_cov_nsep", \
-    #
-    # "mutex_t05_ncomb_cov_nsep", "mutex_t05_nsep_cov_ncomb", "mutex_t06_ncomb_cov_nsep", "mutex_t06_nsep_cov_ncomb", \
-    # "mutex_t07_ncomb_cov_nsep", "mutex_t07_nsep_cov_ncomb", "mutex_t08_ncomb_cov_nsep", "mutex_t08_nsep_cov_ncomb", \
-    # "mutex_t09_ncomb_cov_nsep", "mutex_t09_nsep_cov_ncomb",  \
+models  = ["hotnet2","memcover_v1","memcover_v2","memcover_v3","mutex_t07_nsep_cov", 'hier_hotnet2']
 
-    #Memcover modules
-    # "memcover0.2",
-    # "memcover0.08"
-     ]
 # Read the file once, instead of reading it in a loop many times
 cosmic_genes = read_cosmic_genes()
 for key in tqdm([]):
@@ -417,12 +391,12 @@ for key in tqdm([]):
     fhout = open('../hint/out/evaluation/'+ our_path_key + '/optimized_function_comparison/summary_' + our_path_key  +'.txt', 'w')
     num_genes_list = range(100,600,100)+[554]+range(600,900,100)+[806]+range(900,2600,100)
     #num_genes_list_hh = [554]+[806]
-    print(len(num_genes_list), len(our_paths))
+    # print(len(num_genes_list), len(our_paths))
 
     skip_count = 0 # this is a trick to handle the invariance in the number of files
 
     for i in trange(min(27, len(our_paths)), desc='running main evaluation'):
-        
+
         num_genes = 806 if key == 'hier_hotnet2_k2' else(554 if  key == 'hier_hotnet2_k3' else  str(num_genes_list[i]))
         #indices file index and hotnet file index
 
@@ -456,6 +430,75 @@ for key in tqdm([]):
 
     fhout.close()
 
-generate_cosmic_analysis_file()
-generate_our_eval_files()
-calculate_weighted_scores()
+# models  = ["hotnet2","memcover_v1","memcover_v2","memcover_v3","mutex_t07_nsep_cov", 'hier_hotnet2']
+
+# generate_cosmic_analysis_file()
+# generate_our_eval_files()
+# calculate_weighted_scores()
+
+# models  = ["hotnet2","memcover_v1","memcover_v2","memcover_v3","mutex_t07_nsep_cov", 'hier_hotnet2']
+ps = ['iwavg_cov','wavg_mutex','wavg_covmutex']
+labels = ['Coverage Score (CS)', 'Mutual Exclusion Score ( MS )',  'Driver Module Set Score (DMSS)' ]
+for p,l in zip(ps,labels):
+    Ns= []
+    with open('../hint/out/evaluation_tab/{}.txt'.format(p)) as f:
+        lines = f.readlines()
+        models_ = lines[0].rstrip().split('\t')[1:]
+        model2w = {s:[] for s in models_}
+        for line in lines[1:]:
+            line = line.rstrip().split('\t')
+            Ns.append(int(line[0]))
+            for m,w in zip(models_, line[1:]):
+                if float(w) == 0: continue
+                try:
+                    model2w[m].append(float(w))
+                except:
+                    print(m,w)
+    print(l)
+    for m in models:
+        print(m,'\n',model2w[m])
+
+    axes(frameon=0)
+    for m in models:
+        if m == 'hier_hotnet2':
+            plot([554,806], model2w[m], 'k*', markersize=12)
+        elif m == 'memcover_v3':
+            plot(Ns[:-9], model2w[m], '-o')
+        else:
+            try:
+                plot(Ns, model2w[m], '-o')
+            except:
+                print(m, len(Ns), len(model2w[m]))
+
+    art = []
+    legend_ = [
+        "Hotnet2",
+        "MEMCover_v1",
+        "MEMCover_v2",
+        "MEMCover_v3",
+        "MEXCOwalk",
+        "Hierarchical Hotnet",
+        ]
+
+    legend = plt.legend(legend_, loc=8,fancybox=True, fontsize= 'small', framealpha=0,
+                        edgecolor = 'b', ncol= 2, bbox_to_anchor=(0.5,-0.3))
+    art.append(legend)
+    frame = legend.get_frame()
+    plt.xlabel('total_genes')
+    plt.ylabel(l)
+
+    xtick = list(range(100,2600,200))#+[554]+ list(range(600,800, 200))+[806]+list(range(900, 2600, 200))
+    xticks(xtick, fontsize='x-small')
+    if p == 'iwavg_cov':
+        plt.ylim(-0.01, 0.21)
+    elif p == 'wavg_mutex':
+        # plt.ylim(0.01, 1.)
+        pass
+        # yticks(list(range(1, 10, 1))*0.1)
+    else:
+        plt.ylim(-0.01, 0.18)
+    # axes(frameon=0)
+    grid()
+    plt.savefig('../hint/out/evaluation_tab/plots/{}.pdf'.format(p), format= 'pdf',transparent = True, additional_artists=art,
+                bbox_inches="tight", dpi = 800)
+    plt.close()

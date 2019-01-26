@@ -202,10 +202,8 @@ if __name__ == '__main__':
         "hotnet2",
         "memcover_v1",
         "memcover_v2",
-        "mutex_t07_nsep_cov_nsep",
-        "mutex_t07_nsep_cov",
         "memcover_v3",
-        "hier_hotnet"
+        "mutex_t07_nsep_cov",
         # "mutex", "mutex_cov", #"cov",\
         # "mutex_wesme", "mutex_wesme_cov", \
         # "mutex_ncomb", "cov_ncomb", "mutex_ncomb_cov", \
@@ -236,11 +234,13 @@ if __name__ == '__main__':
     # min_n = 806
     # max_n = 806+10
     # Knearst.run(min_n, max_n)
-    plt.xlabel('N')
-    plt.ylabel('Accuracy')
+
     axes(frameon=0)
     median_idx = 0
     mean_idx = 3
+
+
+
     for model in models:
         if model == 'hier_hotnet': continue
         median_scores = []
@@ -258,32 +258,42 @@ if __name__ == '__main__':
         # print(mean_scores)
         plt.plot(N,median_scores, '-o')
 
+    median_scores = []
+    mean_scores = []
+    for n in [554,806]:
+        results_file = '../results/knearst/{}/{}.txt'.format('hier_hotnet', n)
+        with open(results_file, 'r') as f:
+            lines= f.readlines()
+            mean = float(lines[mean_idx].rstrip().split()[-1])
+            mean_scores.append(mean)
+            median = float(lines[median_idx].rstrip().split()[-1])
+            median_scores.append(median)
+    # print(mean_scores)
+    plt.plot([554,806],median_scores, 'k*',markersize=12)
 
-median_scores = []
-mean_scores = []
-for n in [554,806]:
-    results_file = '../results/knearst/{}/{}.txt'.format('hier_hotnet', n)
-    with open(results_file, 'r') as f:
-        lines= f.readlines()
-        mean = float(lines[mean_idx].rstrip().split()[-1])
-        mean_scores.append(mean)
-        median = float(lines[median_idx].rstrip().split()[-1])
-        median_scores.append(median)
-# print(mean_scores)
-plt.plot([554,806],median_scores, 'k*',)
 
-art = []
-legend = plt.legend(models, loc=8,fancybox=True, fontsize= 'small', framealpha=0,
-                    edgecolor = 'b', ncol= 2, bbox_to_anchor=(0.5,-0.4))
-art.append(legend)
-frame = legend.get_frame()
-# frame.set_facecolor('0.9')
-# frame.set_edgecolor('0.9')
-xtick = list(range(100,2600,200))#+[554]+ list(range(600,800, 200))+[806]+list(range(900, 2600, 200))
-xticks(xtick)
-plt.ylim(0.79, 1)
-# axes(frameon=0)
-grid()
-plt.savefig('../results/knearst/plots/Median_Accuracy.png',additional_artists=art,
-            bbox_inches="tight")
-plt.close()
+    art = []
+    legend_ = [
+        "Hotnet2",
+        "MEMCover_v1",
+        "MEMCover_v2",
+        "MEMCover_v3",
+        "MEXCOwalk",
+        "Hier. Hotnet",
+        ]
+    legend = plt.legend(legend_, loc=8,fancybox=True, fontsize= 'small', framealpha=0,
+                        edgecolor = 'b', ncol= 2, bbox_to_anchor=(0.5,-0.3))
+    art.append(legend)
+    frame = legend.get_frame()
+    # frame.set_facecolor('0.9')
+    # frame.set_edgecolor('0.9')
+    plt.xlabel('total_genes')
+    plt.ylabel('Mean Accuracy')
+    xtick = list(range(100,2600,200))#+[554]+ list(range(600,800, 200))+[806]+list(range(900, 2600, 200))
+    xticks(xtick, fontsize='x-small')
+    plt.ylim(0.79, 1)
+    # axes(frameon=0)
+    grid()
+    plt.savefig('../results/knearst/plots/Mean_Accuracy.pdf', format = 'pdf',additional_artists=art,
+                bbox_inches="tight", dpi = 800)
+    plt.close()
